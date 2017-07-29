@@ -17,12 +17,12 @@ export class ListService {
   lists: Array<SortableItem> = [];
 
   constructor(
-    @Inject('BASE_ENDPOINT') private BASE,
-    @Inject('API_ENDPOINT') private API,
+    @Inject('BASE_ENDPOINT') private BASE: string,
+    @Inject('API_ENDPOINT') private API : string,
     private cardService: CardService,
     private http: Http
   ) {
-    this.ENPOINT = this.BASE + this.API;
+    this.ENPOINT = BASE + API;
   }
 
   /**
@@ -32,11 +32,8 @@ export class ListService {
   get(): Observable<SortableItem[]> {
     return this.http.get(`${this.ENPOINT}${this.LIST_ROUTE}/`)
       .map((res) => res.json())
-      .map((res) => {
-        for (const list of res) {
-          this.lists.push(new List(list));
-        }
-
+      .map((lists) => {
+        this.lists = lists.map(l => new List(l));
         this.lists = this.sortItems(this.lists);
         return this.lists;
       })

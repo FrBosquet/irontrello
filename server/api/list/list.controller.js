@@ -2,14 +2,13 @@ const Q = require('q');
 const _ = require('lodash');
 const listModel = require('./list.model');
 const cardModel = require('../card/card.model');
-
 exports.getLists = function(req, res, next) {
   	listModel.find({}, function(err, lists) {
 	 	if (err) {
 	 		return res.json(err);
 	 	}
 
-        return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
             listModel.populate(lists, 'cards')
                 .then((_lists) => {
                     _.forEach(lists, (list) => {
@@ -27,6 +26,7 @@ exports.createList = function(req, res, next) {
 	    title: req.body.title,
       position: req.body.position
 	});
+
 
 	Q.nfcall(item.save.bind(item))
         .then(function () {
@@ -61,5 +61,7 @@ exports.editList = function(req, res, next) {
 };
 
 exports.removeList = function (req, res) {
-  // Lesson 2: Implement remove list form the database
+  listModel.findByIdAndRemove(req.params.id)
+           .then((list) => res.status(202).json({ message: 'card removed successfully' }))
+           .catch(err => res.status(500).json({ message: 'impossible to remove the card', error: err }));
 };

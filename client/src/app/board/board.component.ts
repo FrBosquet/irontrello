@@ -47,7 +47,10 @@ export class BoardComponent implements OnInit {
   fetchLists() {
     this.listService.get()
       .subscribe(
-        (lists: Array<List>) => this.lists = lists,
+        (lists: Array<List>) => {
+          this.lists = lists
+          console.log(lists);
+        },
         (err) => this.onError(err.message)
       );
   }

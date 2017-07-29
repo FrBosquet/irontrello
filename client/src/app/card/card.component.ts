@@ -24,9 +24,9 @@ export class CardComponent implements OnInit {
     const modalInstance = this.modalService.open(ModalComponent);
     modalInstance.componentInstance.originalCard = card;
 
-    modalInstance
-      .result.then((reason) => {
+    const p:Promise<any> = modalInstance.result;
+    /*p.then((reason) => {
           this.onDelete.emit(this.card._id);
-        });
+        });*/
   }
 }

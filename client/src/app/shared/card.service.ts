@@ -39,8 +39,10 @@ export class CardService {
    * @param card: Card
    * @returns Observable<Card>
    */
-  edit(card: Card) {
+  edit(card: Card): Observable<any>{
     // Lesson 3: Implement the card edit code
+    return this.http.put(`${this.ENPOINT}${this.CARD_ROUTE}/${card._id}`, card)
+    .map((res) => res.json())
   }
 
   /**

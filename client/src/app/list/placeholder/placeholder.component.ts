@@ -1,4 +1,4 @@
-import { EventEmitter } from '@angular/forms/src/facade/async';
+import { EventEmitter } from '@angular/core';
 import { Component, OnInit, Input, Output, ViewChild } from '@angular/core';
 
 @Component({

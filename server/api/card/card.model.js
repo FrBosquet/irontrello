@@ -3,14 +3,14 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const cardSchema = new mongoose.Schema({  
+const cardSchema = new mongoose.Schema({
   title: {
     type: String,
     require: true
   },
   description: String,
   dueDate: Date,
-  position: Number,
+  position: {type:Number, required: true},
   list: {
     type: Schema.Types.ObjectId,
     ref: 'List',
@@ -23,4 +23,4 @@ const cardSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Card', cardSchema);  
+module.exports = mongoose.model('Card', cardSchema);

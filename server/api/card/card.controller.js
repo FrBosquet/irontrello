@@ -3,31 +3,38 @@ mongoose = require('mongoose');
 cardModel = require('./card.model');
 listModel = require('../list/list.model');
 
+// POST
 exports.createCard = function(req, res, next) {
+
+	const {title, description,dueDate, list, position} = req.body;
 	const newCard = new cardModel({
-		title: req.body.title,
-		description: req.body.description,
-		dueDate: req.body.dueDate,
-		list: req.body.list,
-        position: req.body.position
+		title:title,
+		description:description,
+		dueDate,
+		list,
+    position
 	});
 
-	newCard.save(function(err, card) {
-		if(err) {
-      console.log(err);
-			return res.send(500);
-		}
-
-		// Update the corresponding list
-		// Lesson 2: Update the current list
+	newCard.save().then(card=>{
+		listModel.findByIdAndUpdate(list,{ $push:{cards: card._id }})
+			.then(list=>{
+			return res.status(201).json(card);
+		});
 	});
 };
 
 exports.editCard = function(req, res ,next) {
 	const cardId = req.params.id;
-
+	const {title, description,dueDate, list, position} = req.body;
+	const updateObject = {
+		title,
+		description,
+		dueDate,
+		list,
+		position
+	}
 	cardModel
-		.findByIdAndUpdate(cardId, { $set: req.body }, function(err, card) {
+		.findByIdAndUpdate(cardId, { $set: updateObject }, function(err, card) {
 			if(err) {
 				return res.status(400).json({ message: 'Unable to update card', error: err });
 			}

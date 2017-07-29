@@ -6,7 +6,16 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 // Lesson 1: Require mongoose
+const mongoose = require('mongoose');
 // Lesson 2: Require dotenv configuration
+require('dotenv').config();
+
+const urlDB = process.env.MONGO_URL;
+console.log(`conncting to db: ${urlDB}`);
+mongoose.connect(urlDB).then(() => {
+  console.log(`connected!! to db: ${urlDB}`);
+});
+
 
 const app = express();
 
@@ -35,7 +44,8 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  console.log(err);
+  res.json(err);
 });
 
 module.exports = app;

@@ -9,13 +9,15 @@ export class List implements SortableItem {
     position: number;
     cards: Array<Card> = [];
 
-    constructor ({
-        _id, title, position, cards
-    }) {
+    constructor ({ _id, title, position, cards }) {
         this._id = _id;
         this.title = title;
         this.position = position;
-        this.cards = cards.map((card) => new Card(card));
+        this.cards = cards.map(card=> {
+          var q = new Card(card);
+          console.log(q);
+          return q;
+        });
     }
 
     update(list) {
